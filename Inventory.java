@@ -4,19 +4,40 @@ import java.util.ArrayList;
 public class Inventory {
      public static void main(String[] args) {
             Inventory swing = new Inventory();
+            Dimension d =new Dimension(1640,1000);
             JFrame frame = new JFrame("Inventory");
-            frame.setSize(1640, 1080);
+            frame.setSize(1640, 1000);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLayout(null);
             frame.getContentPane().setBackground(Color.BLACK);
             JPanel panel = new JPanel();
-            panel.setSize(1640, 1080);
+            panel.setSize(1640, 1000);
             panel.setLocation(0, 0);
             panel.setBackground(Color.BLACK);
             panel.setLayout(null);
             panel.setVisible(true);
             panel.setFocusable(true);
             frame.add(panel);
+            JScrollBar scrollBar = new JScrollBar();
+            panel.add(scrollBar);
+            scrollBar.setMinimum(0);
+            scrollBar.setMaximum(160);
+            scrollBar.setSize(1600, 20);
+            scrollBar.setLocation(20, 940);
+            scrollBar.setVisible(true);
+            scrollBar.setOrientation(JScrollBar.HORIZONTAL);
+            scrollBar.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
+                public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
+                    scrollBar.setValue(evt.getValue());
+                    panel.setLocation(-evt.getValue(), 0);
+                }
+            });
+            panel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+                public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                    if(java.awt.event.MouseWheelEvent.SHIFT_DOWN_MASK == evt.getModifiersEx())
+                    scrollBar.setValue(scrollBar.getValue() + evt.getWheelRotation()*10);
+                }
+            });
             JButton addButton = new JButton("ADD");
             JButton searchButton = new JButton("SEARCH");
             JTextField searchField = new JTextField();
@@ -124,17 +145,17 @@ public class Inventory {
                 }});
             panel.add(searchField);
             priceList.setFont(new java.awt.Font("Calibri(Heading)", 3, 18));
-            priceList.setSize(150, 860);
+            priceList.setSize(150, 800);
             priceList.setLocation(620,140);
             priceList.setVisible(true);
             panel.add(priceList);
             quantityList.setFont(new java.awt.Font("Calibri(Heading)", 3, 18));
-            quantityList.setSize(150, 860);
+            quantityList.setSize(150, 800);
             quantityList.setLocation(780,140);
             quantityList.setVisible(true);
             panel.add(quantityList);
             totalList.setFont(new java.awt.Font("Calibri(Heading)", 3, 18));
-            totalList.setSize(150, 860);
+            totalList.setSize(150, 800);
             totalList.setLocation(940,140);
             totalList.setVisible(true);
             panel.add(totalList);
@@ -230,7 +251,7 @@ public class Inventory {
             });
             panel.add(nameField);
             itemList.setFont(new java.awt.Font("Calibri(Heading)", 3, 18));
-            itemList.setSize(590, 860);
+            itemList.setSize(590, 800);
             itemList.setLocation(20, 140);
             panel.add(itemList);
             deleteButton.addMouseListener(new java.awt.event.MouseAdapter(){
@@ -379,8 +400,7 @@ public class Inventory {
             discField.setText("DISCOUNT");
             discField.setForeground(Color.LIGHT_GRAY);
             return;
-        }
-            
+        }       
         String search = searchField.getText();
         for(int i = 0; i < items.size(); i++){
             if(items.get(i).contains(search)){
